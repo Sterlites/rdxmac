@@ -1,4 +1,7 @@
+// macbook-scroll-demo.tsx
+
 import { MacbookScroll } from "../ui/macbook-scroll";
+// import linearImage from '../../assets/linear.webp';
 
 export default function MacbookScrollDemo() {
   return (
@@ -9,10 +12,9 @@ export default function MacbookScrollDemo() {
             This Macbook is built by RDx <br /> and is not a gif
           </span>
         }
-
-        // src={`../../../assets/linear.webp`}
-        
+        // src={linearImage}
         showGradient={false}
+        typingText="Rohit Dwivedi" // This text will be "typed" on the keyboard
       />
     </div>
   );
