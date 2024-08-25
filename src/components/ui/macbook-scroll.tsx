@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { MotionValue, motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "../../lib/utils";
