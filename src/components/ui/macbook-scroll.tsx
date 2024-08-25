@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { MotionValue, motion, useScroll, useTransform } from "framer-motion";import { cn } from "../../lib/utils";
-import Image from '../../assets/linear.webp';
+import { MotionValue, motion, useScroll, useTransform } from "framer-motion";
+import { cn } from "../../lib/utils";
+import videoSource from "../../assets/linear.webm";
 
 interface MacbookScrollProps {
   src?: string;
@@ -10,7 +11,6 @@ interface MacbookScrollProps {
   badge?: React.ReactNode;
   typingText?: string; // New prop for customizable typing text
 }
-
 
 export const MacbookScroll: React.FC<MacbookScrollProps> = ({
   src,
@@ -62,7 +62,8 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
       >
         {title || (
           <span>
-            This Macbook is built with Tailwindcss. <br /> No kidding.
+            What you're seeing on this laptop is the code that made what you are
+            seeing <br /> No kidding.
           </span>
         )}
       </motion.h2>
@@ -75,7 +76,9 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
         translate={translate}
       />
       {/* Base area */}
-      <div className="h-[22rem] w-[32rem] bg-gray-200 dark:bg-[#272729] rounded-2xl overflow-hidden relative -z-10">        {/* above keyboard bar */}
+      <div className="h-[22rem] w-[32rem] bg-gray-200 dark:bg-[#272729] rounded-2xl overflow-hidden relative -z-10">
+        {" "}
+        {/* above keyboard bar */}
         <div className="h-10 w-full relative">
           <div className="absolute inset-x-0 mx-auto w-[80%] h-4 bg-[#050505]" />
         </div>
@@ -106,8 +109,8 @@ export const Lid = ({
   scaleY,
   rotate,
   translate,
-  // src,
-}: {
+}: // src,
+{
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
   rotate: MotionValue<number>;
@@ -130,9 +133,7 @@ export const Lid = ({
           }}
           className="absolute inset-0 bg-[#010101] rounded-lg flex items-center justify-center"
         >
-          <span className="text-white">
-            {/* <RDXLogo /> */}
-          </span>
+          <span className="text-white">{/* <RDXLogo /> */}</span>
         </div>
       </div>
       <motion.div
@@ -147,11 +148,16 @@ export const Lid = ({
         className="h-96 w-[32rem] absolute inset-0 bg-[#010101] rounded-2xl p-2"
       >
         <div className="absolute inset-0 bg-[#272729] rounded-lg" />
-        <img
-          src={Image}
-          alt="RDx logo"
+        <video
+          src={videoSource}
+          autoPlay
+          loop
+          muted
+          playsInline
           className="object-cover object-left-top absolute rounded-lg inset-0 h-full w-full"
-        />
+        >
+          Your browser does not support the video tag.
+        </video>
       </motion.div>
     </div>
   );
@@ -177,9 +183,13 @@ export const Keypad: React.FC<{ typingText: string }> = ({ typingText }) => {
       for (let i = 0; i < typingText.length; i++) {
         const char = typingText[i].toUpperCase();
         setActiveKey(char);
-        await new Promise((resolve) => setTimeout(resolve, 100 + Math.random() * 100));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 100 + Math.random() * 500)
+        );
         setActiveKey(null);
-        await new Promise((resolve) => setTimeout(resolve, 50 + Math.random() * 50));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 5 + Math.random() * 500)
+        );
       }
     };
 
@@ -188,23 +198,38 @@ export const Keypad: React.FC<{ typingText: string }> = ({ typingText }) => {
 
   const keyLayout = [
     // Function keys
-    ['ESC', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'BACKSPACE'],
+    [
+      "ESC",
+      "F1",
+      "F2",
+      "F3",
+      "F4",
+      "F5",
+      "F6",
+      "F7",
+      "F8",
+      "F9",
+      "F10",
+      "F11",
+      "F12",
+      "BACKSPACE",
+    ],
     // Number keys
-    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'DELETE'],
+    ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "DELETE"],
     // QWERTY keys
-    ['TAB', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
-    ['CAPS', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'RETURN'],
-    ['SHIFT', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'SHIFT', '↑'],
+    ["TAB", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"],
+    ["CAPS", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "RETURN"],
+    ["SHIFT", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "SHIFT", "↑"],
     // Bottom row
-    ['FN', 'CTRL', 'OPT', 'CMD', 'SPACE', 'OPT', '←', '↓', '→']
+    ["FN", "CTRL", "OPT", "CMD", "SPACE", "OPT", "←", "↓", "→"],
   ];
   return (
     <div className="h-full rounded-md bg-[#050505] mx-1 p-1">
       {keyLayout.map((row, rowIndex) => (
         <Row key={rowIndex}>
           {row.map((key) => (
-            <KBtn 
-              key={key} 
+            <KBtn
+              key={key}
               active={activeKey === key}
               className={getKeyClass(key)}
             >
@@ -219,9 +244,7 @@ export const Keypad: React.FC<{ typingText: string }> = ({ typingText }) => {
 // Update KBtn to accept an 'active' prop
 
 const Row: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="flex gap-[2px] mb-[2px] w-full flex-shrink-0">
-    {children}
-  </div>
+  <div className="flex gap-[2px] mb-[2px] w-full flex-shrink-0">{children}</div>
 );
 
 const KBtn: React.FC<{
@@ -266,25 +289,25 @@ const KBtn: React.FC<{
 
 const getKeyClass = (key: string): string => {
   switch (key) {
-    case 'SPACE':
-      return 'w-36'; // Wide space bar
+    case "SPACE":
+      return "w-36"; // Wide space bar
     // case 'SHIFT':
-    case 'CAPS':
-    case 'BACKSPACE':
-    case 'TAB':
-    case 'DELETE':
-    case 'RETURN':
-      return 'w-12'; // Wider keys
-    case 'ESC':
-    case 'FN':
-    case 'CTRL':
-    case 'OPT':
-    case 'CMD':
-        return 'w-8'; // Slightly wider keys
-    case 'SHIFT':
-        return 'w-10'; // Slightly wider keys
+    case "CAPS":
+    case "BACKSPACE":
+    case "TAB":
+    case "DELETE":
+    case "RETURN":
+      return "w-12"; // Wider keys
+    case "ESC":
+    case "FN":
+    case "CTRL":
+    case "OPT":
+    case "CMD":
+      return "w-8"; // Slightly wider keys
+    case "SHIFT":
+      return "w-10"; // Slightly wider keys
     default:
-      return 'w-6'; // Default key width
+      return "w-6"; // Default key width
   }
 };
 
