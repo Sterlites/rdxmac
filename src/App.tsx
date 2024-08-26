@@ -8,6 +8,7 @@ function App() {
   //   setIsDarkMode(!isDarkMode);
   // };
   return (
+    
     <div className={isDarkMode ? "dark" : ""}>
       {/* <h1 className={isDarkMode ? 'light' : ''}>RDx + Vite + React + Tailwind Widget is live</h1> */}
       {/* <button
@@ -19,6 +20,7 @@ function App() {
 
       <MacbookScrollDemo />
     </div>
+    
   );
 }
 

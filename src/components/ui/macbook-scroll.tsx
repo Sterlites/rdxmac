@@ -29,7 +29,14 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
       setIsMobile(true);
     }
   }, []);
-
+ // Transition animation explanation:
+  // - Between 0 and 0.3 of the scroll, the MacBook scales up from 1.2 to 1.5 (desktop) or 1 (mobile) horizontally and from 0.6 to 1.5 (desktop) or 1 (mobile) vertically.
+  // - Between 0.3 and 0.6 of the scroll, the MacBook scales up from 1.5 to 2 horizontally and from 1.5 to 2 vertically.
+  // - Between 0 and 0.6 of the scroll, the MacBook moves up by 1500px.
+  // - Between 0.1 and 0.12 of the scroll, the MacBook rotates by -28 degrees.
+  // - Between 0 and 0.3 of the scroll, the title opacity goes from 1 to 0.
+  // - Between 0.6 and 0.8 of the scroll, the video scales up from 1 to 3.
+  // - Between 0.8 and 0.9 of the scroll, the video opacity goes from 1 to 0.
   const scaleX = useTransform(scrollYProgress, [0, 0.3, 0.6], [1.2, isMobile ? 1 : 1.5, 2]);
   const scaleY = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.6, isMobile ? 1 : 1.5, 2]);
   const translate = useTransform(scrollYProgress, [0, 0.6, 1], [0, 1500, 3000]);
