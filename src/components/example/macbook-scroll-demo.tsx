@@ -1,4 +1,3 @@
-import React from 'react';
 import { MacbookScroll } from "../ui/macbook-scroll";
 import { motion, useScroll, useTransform } from "framer-motion";
 
