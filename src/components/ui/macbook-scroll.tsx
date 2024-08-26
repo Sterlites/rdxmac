@@ -1,23 +1,20 @@
-// "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { MotionValue, motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "../../lib/utils";
 import videoSource from "../../assets/linear.webm";
 
 interface MacbookScrollProps {
-  src?: string;
   showGradient?: boolean;
   title?: string | React.ReactNode;
   badge?: React.ReactNode;
-  typingText?: string; // New prop for customizable typing text
+  typingText?: string;
 }
 
 export const MacbookScroll: React.FC<MacbookScrollProps> = ({
-  src,
   showGradient,
   title,
   badge,
-  typingText = "Hello, World!", // Default text if none provided
+  typingText = "Hello, World!",
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -33,29 +30,20 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
     }
   }, []);
 
-  const scaleX = useTransform(
-    scrollYProgress,
-    [0, 0.3],
-    [1.2, isMobile ? 1 : 1.5]
-  );
-  const scaleY = useTransform(
-    scrollYProgress,
-    [0, 0.3],
-    [0.6, isMobile ? 1 : 1.5]
-  );
-  const translate = useTransform(scrollYProgress, [0, 1], [0, 1500]);
-  const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3], [-28, -28, 0]);
-  const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
+  const scaleX = useTransform(scrollYProgress, [0, 0.3, 0.6], [1.2, isMobile ? 1 : 1.5, 2]);
+  const scaleY = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.6, isMobile ? 1 : 1.5, 2]);
+  const translate = useTransform(scrollYProgress, [0, 0.6, 1], [0, 1500, 3000]);
+  const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3, 0.6], [-28, -28, 0, 0]);
+  const videoOpacity = useTransform(scrollYProgress, [0.6, 0.8], [1, 0]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   return (
     <div
       ref={ref}
-      className="min-h-[200vh] flex flex-col items-center py-0 md:py-80 justify-start flex-shrink-0 [perspective:800px] transform md:scale-100 scale-[0.35] sm:scale-50"
+      className="min-h-[300vh] flex flex-col items-center py-0 md:py-80 justify-start flex-shrink-0 [perspective:800px] transform md:scale-100 scale-[0.35] sm:scale-50"
     >
       <motion.h2
         style={{
-          translateY: textTransform,
           opacity: textOpacity,
         }}
         className="dark:text-white text-neutral-800 text-3xl font-bold mb-20 text-center"
@@ -67,18 +55,14 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
           </span>
         )}
       </motion.h2>
-      {/* Lid */}
       <Lid
-        src={src}
         scaleX={scaleX}
         scaleY={scaleY}
         rotate={rotate}
         translate={translate}
+        videoOpacity={videoOpacity}
       />
-      {/* Base area */}
       <div className="h-[22rem] w-[32rem] bg-gray-200 dark:bg-[#272729] rounded-2xl overflow-hidden relative -z-10">
-        {" "}
-        {/* above keyboard bar */}
         <div className="h-10 w-full relative">
           <div className="absolute inset-x-0 mx-auto w-[80%] h-4 bg-[#050505]" />
         </div>
@@ -87,7 +71,7 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
             <SpeakerGrid />
           </div>
           <div className="mx-auto w-[80%] h-full">
-            <Keypad typingText={typingText} /> {/* Pass typingText to Keypad */}
+            <Keypad typingText={typingText} />
           </div>
           <div className="mx-auto w-[10%] overflow-hidden h-full">
             <SpeakerGrid />
@@ -109,13 +93,13 @@ export const Lid = ({
   scaleY,
   rotate,
   translate,
-}: // src,
-{
+  videoOpacity,
+}: {
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
   rotate: MotionValue<number>;
   translate: MotionValue<number>;
-  src?: string;
+  videoOpacity: MotionValue<number>;
 }) => {
   return (
     <div className="relative [perspective:800px]">
@@ -133,7 +117,7 @@ export const Lid = ({
           }}
           className="absolute inset-0 bg-[#010101] rounded-lg flex items-center justify-center"
         >
-          <span className="text-white">{/* <RDXLogo /> */}</span>
+          <span className="text-white"></span>
         </div>
       </div>
       <motion.div
@@ -148,21 +132,21 @@ export const Lid = ({
         className="h-96 w-[32rem] absolute inset-0 bg-[#010101] rounded-2xl p-2"
       >
         <div className="absolute inset-0 bg-[#272729] rounded-lg" />
-        <video
+        <motion.video
           src={videoSource}
           autoPlay
           loop
           muted
           playsInline
+          style={{ opacity: videoOpacity }}
           className="object-cover object-left-top absolute rounded-lg inset-0 h-full w-full"
         >
           Your browser does not support the video tag.
-        </video>
+        </motion.video>
       </motion.div>
     </div>
   );
 };
-
 export const Trackpad = () => {
   return (
     <div
