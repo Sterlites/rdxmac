@@ -14,7 +14,7 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
   showGradient,
   title,
   badge,
-  typingText = "Hello, World!",
+  typingText = "Rohit Dwivedi aka RDx, is teh GOAT Artist, jack of all trades master of Some!",
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -34,8 +34,9 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
   const scaleY = useTransform(scrollYProgress, [0, 0.3, 0.6], [0.6, isMobile ? 1 : 1.5, 2]);
   const translate = useTransform(scrollYProgress, [0, 0.6, 1], [0, 1500, 3000]);
   const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3, 0.6], [-28, -28, 0, 0]);
-  const videoOpacity = useTransform(scrollYProgress, [0.6, 0.8], [1, 0]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const videoScale = useTransform(scrollYProgress, [0.6, 0.8], [1, 3]);
+  const videoOpacity = useTransform(scrollYProgress, [0.8, 0.9], [1, 0]);
 
   return (
     <div
@@ -50,7 +51,7 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
       >
         {title || (
           <span >
-            <h1 className="text-4xl md:text-4xl lg:text-6xl font-bold max-w-7xl mx-auto text-center mt-6 relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white">
+            <h1 className="text-4xl md:text-4xl lg:text-6xl font-semibold max-w-7xl mx-auto text-center mt-6 relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white">
             This MacBook is typing the code that made what you see<br/>
             </h1>
              No kidding!
@@ -64,6 +65,7 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
         rotate={rotate}
         translate={translate}
         videoOpacity={videoOpacity}
+        videoScale={videoScale}
       />
       <div className="h-[22rem] w-[32rem] bg-gray-200 dark:bg-[#272729] rounded-2xl overflow-hidden relative -z-10">
         <div className="h-10 w-full relative">
@@ -97,12 +99,15 @@ export const Lid = ({
   rotate,
   translate,
   videoOpacity,
+  videoScale,
 }: {
   scaleX: MotionValue<number>;
   scaleY: MotionValue<number>;
   rotate: MotionValue<number>;
   translate: MotionValue<number>;
   videoOpacity: MotionValue<number>;
+  videoScale: MotionValue<number>;
+
 }) => {
   return (
     <div className="relative [perspective:800px]">
@@ -141,7 +146,11 @@ export const Lid = ({
           loop
           muted
           playsInline
-          style={{ opacity: videoOpacity }}
+          style={{ 
+            opacity: videoOpacity,
+            scale: videoScale,
+            transformOrigin: "center center",
+          }}
           className="object-cover object-left-top absolute rounded-lg inset-0 h-full w-full"
         >
           Your browser does not support the video tag.
