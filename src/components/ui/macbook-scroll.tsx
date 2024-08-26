@@ -49,10 +49,13 @@ export const MacbookScroll: React.FC<MacbookScrollProps> = ({
         className="dark:text-white text-neutral-800 text-3xl font-bold mb-20 text-center"
       >
         {title || (
-          <span>
-            What you're seeing on this laptop is the code that made what you are
-            seeing <br /> No kidding.
+          <span >
+            <h1 className="text-4xl md:text-4xl lg:text-6xl font-bold max-w-7xl mx-auto text-center mt-6 relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 dark:from-neutral-800 dark:via-white dark:to-white">
+            This MacBook is typing the code that made what you see<br/>
+            </h1>
+             No kidding!
           </span>
+
         )}
       </motion.h2>
       <Lid
