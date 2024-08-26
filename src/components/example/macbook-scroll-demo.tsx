@@ -9,24 +9,23 @@ const WebsiteContent = () => (
 
 export default function MacbookScrollDemo() {
   const { scrollYProgress } = useScroll();
-  
+
   const opacity = useTransform(scrollYProgress, [0.7, 0.8], [0, 1]);
   const scale = useTransform(scrollYProgress, [0.6, 0.8], [0.5, 1]);
-  
+
   return (
-    <div className="relative">
-      <div className="h-[300vh]">
-        <MacbookScroll
-          showGradient={false}
-          typingText="The quick brown fox jumps over the lazy dog."
-        />
+    <div className="overflow-hidden dark:bg-[#0B0B0F] bg-white w-full">
+      <div className="relative">
+        <div className="h-[300vh]">
+          <MacbookScroll
+            showGradient={false}
+            typingText="The quick brown fox jumps over the lazy dog."
+          />
+        </div>
+        <motion.div className="fixed inset-0 z-10" style={{ opacity, scale }}>
+          <WebsiteContent />
+        </motion.div>
       </div>
-      <motion.div 
-        className="fixed inset-0 z-10"
-        style={{ opacity, scale }}
-      >
-        <WebsiteContent />
-      </motion.div>
     </div>
   );
 }
